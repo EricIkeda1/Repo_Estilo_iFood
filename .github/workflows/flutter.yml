@@ -1,22 +1,28 @@
 name: Flutter
 on: [push, workflow_dispatch]
 jobs:
-  build:
+  web:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
         with:
-          channel: stable
-      - run: python3 bootstrap.py
+          flutter-version: '3.35.7'
+      - run: flutter pub get
       - run: flutter analyze --no-fatal-infos --no-fatal-warnings lib
       - run: flutter build web
-      - uses: actions/setup-java@v4
+      - run: node --check cloud/index.mjs
+      - run: curl --fail --retry 2 https://br-damp-flower-bd9dyeuv-delivery.compute.c-8.us-east-2.aws.neon.tech/health
+  android:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
         with:
-          distribution: temurin
-          java-version: '17'
-      - run: flutter build apk --debug --dart-define=API_URL=http://10.0.2.2:3000
+          flutter-version: '3.35.7'
+      - run: flutter create --platforms=android --project-name=eyi_food --org br.com.ericyikeda .
+      - run: flutter build apk --debug
       - uses: actions/upload-artifact@v4
         with:
-          name: eyi-food-emulador
+          name: eyi-food-android
           path: build/app/outputs/flutter-apk/app-debug.apk

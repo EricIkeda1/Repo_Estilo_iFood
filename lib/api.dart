@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:math';
 import 'package:http/http.dart' as http;
 class Api {
- static const base=String.fromEnvironment('API_URL',defaultValue:'http://localhost:3000');
+ static const base=String.fromEnvironment('API_URL',defaultValue:'https://br-damp-flower-bd9dyeuv-delivery.compute.c-8.us-east-2.aws.neon.tech');
  String token='',name='';bool merchant=false;
  Future<dynamic> call(String route,[Map<String,dynamic>? data])async{
   final uri=Uri.parse('$base$route'),headers={'Content-Type':'application/json','Authorization':'Bearer $token'};

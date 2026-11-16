@@ -13,3 +13,5 @@ CREATE TABLE IF NOT EXISTS food_orders (
  total integer NOT NULL, status text NOT NULL DEFAULT 'Recebido', created timestamptz NOT NULL DEFAULT now(),
  UNIQUE(user_id,request_id)
 );
+
+CREATE TABLE IF NOT EXISTS food_auth_limits (bucket text PRIMARY KEY, expires timestamptz NOT NULL, attempts integer NOT NULL DEFAULT 1);
